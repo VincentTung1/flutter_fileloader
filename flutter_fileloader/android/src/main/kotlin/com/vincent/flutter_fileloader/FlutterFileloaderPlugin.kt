@@ -1,6 +1,9 @@
 package com.vincent.flutter_fileloader
 
+import android.content.Context
+import android.widget.Toast
 import androidx.annotation.NonNull;
+import com.vincent.flutter_fileloader.activity.LoadExcelActivity
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -8,6 +11,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import kotlin.coroutines.coroutineContext
 
 /** FlutterFileloaderPlugin */
 public class FlutterFileloaderPlugin: FlutterPlugin, MethodCallHandler {
@@ -17,7 +21,11 @@ public class FlutterFileloaderPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
 
+  private lateinit var mContext : Context
+
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    mContext = flutterPluginBinding.applicationContext
+
     channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_fileloader")
     channel.setMethodCallHandler(this);
   }
@@ -42,6 +50,15 @@ public class FlutterFileloaderPlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    }else if(call.method == "loadFile"){
+      val path = call.argument<String>("path")
+
+      when(path?.substring(path.lastIndexOf("."))){
+
+         ".xls",".xlsx" ->{
+           LoadExcelActivity.start(mContext,path)
+         }
+       }
     } else {
       result.notImplemented()
     }

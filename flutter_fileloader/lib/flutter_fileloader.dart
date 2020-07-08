@@ -10,4 +10,10 @@ class FlutterFileloader {
     final String version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
+
+  static void loadFile(String path) async{
+     await _channel.invokeMethod('loadFile',{
+         'path' : path
+     });
+  }
 }
