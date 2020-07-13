@@ -26,7 +26,7 @@ public class FlutterFileloaderPlugin: FlutterPlugin, MethodCallHandler {
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     mContext = flutterPluginBinding.applicationContext
 
-    channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_fileloader")
+    channel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "flutter_fileloader")
     channel.setMethodCallHandler(this);
   }
 

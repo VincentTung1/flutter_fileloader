@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       _platformVersion = platformVersion;
     });
 
-    FlutterFileloader.loadFile("/sdcard/0/test.xlsx");
+    FlutterFileloader.loadFile("/sdcard/test.xls");
   }
 
   @override
